@@ -2,7 +2,7 @@
 
 ## Members:
 
-[//]: # (TODO: Find a final group member)
+* Zack Maurice
 * Benjamin Karstad
 * Conor MacQuarrie
 * Graham Sutton
