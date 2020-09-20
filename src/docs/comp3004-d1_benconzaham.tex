@@ -1,5 +1,8 @@
 \documentclass[12pt]{article}
 
+\usepackage{graphicx}
+\usepackage{subcaption}
+
 \title{Bencozaham}
 \author{
 	Benjamin Karstad
@@ -142,9 +145,38 @@ since people tend to have their phone on them most of the day so they will see t
 	When they then have the equivalent evaluation they may present their USD to the vendor in exchange for whatever it is they may be buying,
 	and circumvent the awkwardness of the exchange.
 
+\pagebreak
+
 \section*{UI Mockups}
 
-    The first three pictures show the checklist feature. Checking an item changes the colour to easily see unchecked vs checked items.
+\begin{figure}[h!]
+	\centering
+	\begin{subfigure}[h!]{0.2\linewidth}
+		\includegraphics[width=\linewidth]{checklist-base.png}
+		\caption{Packing checklist}
+		\label{fig:checklist-base}
+	\end{subfigure}
+	\begin{subfigure}[h]{0.2\linewidth}
+		\includegraphics[width=\linewidth]{checklist-add.png}
+		\caption{Adding to a checklist}
+		\label{fig:checklist-add}
+	\end{subfigure}
+	\begin{subfigure}[h]{0.2\linewidth}
+		\includegraphics[width=\linewidth]{checklist-remove.png}
+		\caption{Removing from a checklist}
+		\label{fig:checklist-remove}
+	\end{subfigure}
+	\caption{Creating a packing list would behave much like a digital todo list.}
+\end{figure}
+
+\begin{figure}[ht!]
+	\includegraphics[scale=0.3]{budget-base.png}
+	\caption{The budgeting tab}
+	\label{fig:budget-base}
+\end{figure}
+
+    The first three pictures show the checklist feature.
+	Checking an item changes the colour to easily see unchecked vs checked items.
     Items have a number, which represents an amount.
     The bottom tab has out app features laid out for easy navigation.
     Swipe left on items to remove them from the list.
@@ -155,5 +187,8 @@ since people tend to have their phone on them most of the day so they will see t
     You can enter a budget for your trip.
     When you add expenses it takes away from your total budget.
 
+
+
+Checklist mockups: \ref{fig:checklist-base} \ref{fig:checklist-add} \ref{fig:checklist-remove} \ref{fig:budget-base}
 
 \end{document}
