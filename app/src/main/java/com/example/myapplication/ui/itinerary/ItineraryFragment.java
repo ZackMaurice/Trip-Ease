@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.dashboard;
+package com.example.myapplication.ui.itinerary;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,17 +14,18 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.myapplication.R;
 
-public class DashboardFragment extends Fragment {
+public class ItineraryFragment extends Fragment {
 
-    private DashboardViewModel dashboardViewModel;
+    private ItineraryViewModel itineraryViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        dashboardViewModel =
-                ViewModelProviders.of(this).get(DashboardViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
-        final TextView textView = root.findViewById(R.id.text_dashboard);
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        itineraryViewModel =
+                ViewModelProviders.of(this).get(ItineraryViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_itinerary, container, false);
+        System.out.println("Hello");
+        final TextView textView = root.findViewById(R.id.text_itinerary);
+        itineraryViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
