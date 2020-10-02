@@ -4,4 +4,10 @@
     <string name="title_checklist">Checklist</string>
     <string name="title_budget">Budget</string>
     <string name="title_miscellaneous">Misc</string>
+    <string-array name="currencies">
+        <item>CAD</item>
+        <item>EUR</item>
+        <item>JPY</item>
+        <item>AUD</item>
+    </string-array>
 </resources>
