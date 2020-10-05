@@ -1,0 +1,2 @@
+Created the UI fragments for each of the primary features of our app.
+Implemented a "dumb" skeleton of the most basic features of budget.
