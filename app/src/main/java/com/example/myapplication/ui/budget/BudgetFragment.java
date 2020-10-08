@@ -1,7 +1,6 @@
 package com.example.myapplication.ui.budget;
 
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,32 +70,26 @@ public class BudgetFragment extends Fragment {
 		});
 
 		//show newExpensePrompt on click
-		newExpense.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				expenseList.setVisibility(View.GONE);
-				newExpensePrompt.setVisibility(View.VISIBLE);
-			}
+		newExpense.setOnClickListener(v->{
+			expenseList.setVisibility(View.GONE);
+			newExpensePrompt.setVisibility(View.VISIBLE);
 		});
 
-		addExpense.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				newExpensePrompt.setVisibility(View.GONE);
-				expenseList.setVisibility(View.VISIBLE);
+		addExpense.setOnClickListener(v->{
+			newExpensePrompt.setVisibility(View.GONE);
+			expenseList.setVisibility(View.VISIBLE);
 
-				//retrieve and reset user inputs
-				EditText expenseNameItem = newExpensePrompt.findViewById(R.id.expenseName),
-						expenseAmountItem = newExpensePrompt.findViewById(R.id.expenseAmount);
+			//retrieve and reset user inputs
+			EditText expenseNameItem = newExpensePrompt.findViewById(R.id.expenseName),
+					expenseAmountItem = newExpensePrompt.findViewById(R.id.expenseAmount);
 
-				String expenseName = expenseNameItem.getText().toString();
-				float expenseAmount = Float.parseFloat(expenseAmountItem.getText().toString());
+			String expenseName = expenseNameItem.getText().toString();
+			float expenseAmount = Float.parseFloat(expenseAmountItem.getText().toString());
 
-				expenseNameItem.setText("");
-				expenseAmountItem.setText("");
+			expenseNameItem.setText("");
+			expenseAmountItem.setText("");
 
-				AddNewExpense(expenseName, expenseAmount);
-			}
+			AddNewExpense(expenseName, expenseAmount);
 		});
 		return root;
 	}
