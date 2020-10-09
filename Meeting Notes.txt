@@ -1,0 +1,12 @@
+Monday Sept 14
+	Partitioned responsibilities for D1
+		Project Description - Conor
+		Funcitonal Properties - Ben
+		Non-functional properties - Zac
+		User Scenarios - Graham
+		UI Mockups - Conor
+		Presentation - Ben
+		
+Monday Sept 21
+	Uploaded Android Studio base code to repository
+	Using week to get comfortable with Android Studio

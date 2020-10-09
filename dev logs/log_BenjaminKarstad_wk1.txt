@@ -1,0 +1,2 @@
+Spent the week self-familiarizing with the AndroidStudio environment.
+Discussed high level goals with team.

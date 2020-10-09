@@ -3,23 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@id/navigation_checklist">
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.example.myapplication.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/navigation_checklist"
+        android:name="com.example.myapplication.ui.checklist.ChecklistFragment"
+        android:label="@string/title_checklist"
+        tools:layout="@layout/fragment_checklist" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.myapplication.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_itinerary"
+        android:name="com.example.myapplication.ui.itinerary.ItineraryFragment"
+        android:label="@string/title_itinerary"
+        tools:layout="@layout/fragment_itinerary" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.myapplication.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_budget"
+        android:name="com.example.myapplication.ui.budget.BudgetFragment"
+        android:label="@string/title_budget"
+        tools:layout="@layout/fragment_budget" />
+
+    <fragment
+        android:id="@+id/navigation_miscellaneous"
+        android:name="com.example.myapplication.ui.miscellaneous.MiscellaneousFragment"
+        android:label="@string/title_miscellaneous"
+        tools:layout="@layout/fragment_miscellaneous" />
 </navigation>
