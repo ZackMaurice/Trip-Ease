@@ -1,6 +1,8 @@
 package com.example.myapplication.ui.budget;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,9 @@ import com.example.myapplication.util.Currency;
 public class BudgetFragment extends Fragment {
 
 	private BudgetViewModel budgetViewModel;
+	private TextWatcher fromAmountWatcher, toAmountWatcher;
+	private boolean ignoreChanges = false; //prevent infinite loops caused by TextWatchers recursively triggering each other
+
 	Spinner fromCurrency, toCurrency;
 	TextView fromAmount, toAmount;
 	Button newExpense, addExpense;
@@ -43,6 +48,46 @@ public class BudgetFragment extends Fragment {
 				R.array.currencies,
 				android.R.layout.simple_spinner_item);
 
+		//Initialize TextWatchers
+		fromAmountWatcher = new TextWatcher() {
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				if(!ignoreChanges) {
+					try {
+						ignoreChanges = true;
+						convertFromAmount();
+					} finally {
+						ignoreChanges = false;
+					}
+				}
+			}
+		};
+		toAmountWatcher = new TextWatcher() {
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				if(!ignoreChanges) {
+					try {
+						ignoreChanges = true;
+						convertToAmount();
+					} finally {
+						ignoreChanges = false;
+					}
+				}
+			}
+		};
+
 		//Specify the layout to use when the list of choices appears
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -50,23 +95,33 @@ public class BudgetFragment extends Fragment {
 		fromCurrency.setAdapter(adapter);
 		toCurrency.setAdapter(adapter);
 
-		//TODO: Make currency converter interactively calculate converted amounts.
-		fromAmount.setOnEditorActionListener((v, actionId, event)->{
-			float fromAmount = Float.parseFloat(this.fromAmount.getText().toString());
+		//interactively calculate converted amounts.
+		fromAmount.addTextChangedListener(fromAmountWatcher);
 
-			Currency fromCurrency = Currency.valueOf(this.fromCurrency.getSelectedItem().toString());
-			Currency toCurrency = Currency.valueOf(this.toCurrency.getSelectedItem().toString());
-			toAmount.setText(Float.toString(fromCurrency.convertTo(toCurrency, fromAmount)));
-			return true;
+		toCurrency.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+					convertFromAmount();
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+
+			}
 		});
 
-		toAmount.setOnEditorActionListener((v, actionId, event)->{
-			float toAmount = Float.parseFloat(this.toAmount.getText().toString());
+		toAmount.addTextChangedListener(toAmountWatcher);
 
-			Currency toCurrency = Currency.valueOf(this.toCurrency.getSelectedItem().toString());
-			Currency fromCurrency = Currency.valueOf(this.fromCurrency.getSelectedItem().toString());
-			fromAmount.setText(Float.toString(toCurrency.convertTo(fromCurrency, toAmount)));
-			return true;
+		fromCurrency.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				convertToAmount();
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+
+			}
 		});
 
 		//show newExpensePrompt on click
@@ -92,6 +147,28 @@ public class BudgetFragment extends Fragment {
 			AddNewExpense(expenseName, expenseAmount);
 		});
 		return root;
+	}
+
+	private void convertToAmount() {
+		float toAmount;
+		try {
+			toAmount = Float.parseFloat(BudgetFragment.this.toAmount.getText().toString());
+		} catch(NumberFormatException e) { return; }
+
+		Currency toCurrency = Currency.valueOf(BudgetFragment.this.toCurrency.getSelectedItem().toString());
+		Currency fromCurrency = Currency.valueOf(BudgetFragment.this.fromCurrency.getSelectedItem().toString());
+		fromAmount.setText(Float.toString(toCurrency.convertTo(fromCurrency, toAmount)));
+	}
+
+	private void convertFromAmount() {
+		float fromAmount;
+		try {
+			fromAmount = Float.parseFloat(BudgetFragment.this.fromAmount.getText().toString());
+		} catch(NumberFormatException e) { return;}
+
+		Currency fromCurrency = Currency.valueOf(BudgetFragment.this.fromCurrency.getSelectedItem().toString());
+		Currency toCurrency = Currency.valueOf(BudgetFragment.this.toCurrency.getSelectedItem().toString());
+		toAmount.setText(Float.toString(fromCurrency.convertTo(toCurrency, fromAmount)));
 	}
 
 	/**
