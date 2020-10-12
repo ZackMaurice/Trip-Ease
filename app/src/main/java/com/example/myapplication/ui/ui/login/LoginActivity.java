@@ -22,7 +22,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.myapplication.ui.R;
+import com.example.myapplication.R;
 import com.example.myapplication.ui.ui.login.LoginViewModel;
 import com.example.myapplication.ui.ui.login.LoginViewModelFactory;
 
