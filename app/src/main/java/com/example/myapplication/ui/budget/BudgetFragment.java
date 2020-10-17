@@ -158,23 +158,23 @@ public class BudgetFragment extends Fragment {
 	private void convertToAmount() {
 		float toAmount;
 		try {
-			toAmount = Float.parseFloat(BudgetFragment.this.toAmount.getText().toString());
+			toAmount = Float.parseFloat(this.toAmount.getText().toString());
 		} catch(NumberFormatException e) { return; }
 
-		Currency toCurrency = Currency.valueOf(BudgetFragment.this.toCurrency.getSelectedItem().toString());
-		Currency fromCurrency = Currency.valueOf(BudgetFragment.this.fromCurrency.getSelectedItem().toString());
-		fromAmount.setText(Float.toString(toCurrency.convertTo(fromCurrency, toAmount)));
+		Currency toCurrency = Currency.valueOf(this.toCurrency.getSelectedItem().toString());
+		Currency fromCurrency = Currency.valueOf(this.fromCurrency.getSelectedItem().toString());
+		setCurrencyText(fromAmount, fromCurrency.format(toCurrency.convertTo(fromCurrency, toAmount), false));
 	}
 
 	private void convertFromAmount() {
 		float fromAmount;
 		try {
-			fromAmount = Float.parseFloat(BudgetFragment.this.fromAmount.getText().toString());
+			fromAmount = Float.parseFloat(this.fromAmount.getText().toString());
 		} catch(NumberFormatException e) { return;}
 
-		Currency fromCurrency = Currency.valueOf(BudgetFragment.this.fromCurrency.getSelectedItem().toString());
-		Currency toCurrency = Currency.valueOf(BudgetFragment.this.toCurrency.getSelectedItem().toString());
-		toAmount.setText(Float.toString(fromCurrency.convertTo(toCurrency, fromAmount)));
+		Currency fromCurrency = Currency.valueOf(this.fromCurrency.getSelectedItem().toString());
+		Currency toCurrency = Currency.valueOf(this.toCurrency.getSelectedItem().toString());
+		setCurrencyText(toAmount, toCurrency.format(fromCurrency.convertTo(toCurrency, fromAmount), false));
 	}
 
 	/**
@@ -211,6 +211,12 @@ public class BudgetFragment extends Fragment {
 		expenseItem.addView(amountView);
 
 		expenseList.addView(expenseItem, 0);
+	}
+
+	private void setCurrencyText(TextView textView, String amount) {
+		ignoreChanges = true;
+		textView.setText(amount);
+		ignoreChanges = false;
 	}
 
 	private static class BudgetItem {
