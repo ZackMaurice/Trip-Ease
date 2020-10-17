@@ -15,11 +15,15 @@ import androidx.lifecycle.ViewModelProviders;
 import com.example.myapplication.R;
 import com.example.myapplication.util.Currency;
 
+import java.util.ArrayList;
+
 public class BudgetFragment extends Fragment {
 
 	private BudgetViewModel budgetViewModel;
 	private TextWatcher fromAmountWatcher, toAmountWatcher;
 	private boolean ignoreChanges = false; //prevent infinite loops caused by TextWatchers recursively triggering each other
+
+	private ArrayList<BudgetItem> expenses;
 
 	Spinner fromCurrency, toCurrency;
 	TextView fromAmount, toAmount;
@@ -30,6 +34,8 @@ public class BudgetFragment extends Fragment {
 							 ViewGroup container, Bundle savedInstanceState) {
 		budgetViewModel = ViewModelProviders.of(this).get(BudgetViewModel.class);
 		View root = inflater.inflate(R.layout.fragment_budget, container, false);
+
+		expenses = new ArrayList<>();
 
 		fromCurrency = root.findViewById(R.id.fromCurrency);
 		fromAmount = root.findViewById(R.id.fromAmount);
@@ -144,7 +150,7 @@ public class BudgetFragment extends Fragment {
 			expenseNameItem.setText("");
 			expenseAmountItem.setText("");
 
-			AddNewExpense(expenseName, expenseAmount);
+			addNewExpense(expenseName, expenseAmount);
 		});
 		return root;
 	}
@@ -176,16 +182,28 @@ public class BudgetFragment extends Fragment {
 	 * @param name   The name of the expense
 	 * @param amount The quantity of the expense
 	 */
-	private void AddNewExpense(String name, Float amount) {
+	private void addNewExpense(String name, float amount) {
+		addNewExpense(new BudgetItem(name, amount));
+	}
+
+	/**
+	 * @param expense the BudgetItem that represents this expense.
+	 */
+	private void addNewExpense(BudgetItem expense) {
+		String name = expense.name;
+		float amount = expense.amount;
+
+		expenses.add(expense);
+
 		LinearLayout expenseItem = new LinearLayout(getContext());
 
 		TextView nameView = new TextView(getContext()),
-		amountView = new TextView(getContext());
+				amountView = new TextView(getContext());
 
 		nameView.setText(name);
 		nameView.setTextSize(24);
 
-		amountView.setText(amount.toString());
+		amountView.setText(Float.toString(amount));
 		amountView.setTextSize(18);
 		amountView.setPadding(32, 0, 0, 0);
 
@@ -193,5 +211,15 @@ public class BudgetFragment extends Fragment {
 		expenseItem.addView(amountView);
 
 		expenseList.addView(expenseItem, 0);
+	}
+
+	private static class BudgetItem {
+		public final String name;
+		public final float amount;
+
+		public BudgetItem(String name, Float amount) {
+			this.name = name;
+			this.amount = amount;
+		}
 	}
 }
