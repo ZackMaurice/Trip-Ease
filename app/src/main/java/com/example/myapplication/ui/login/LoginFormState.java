@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.ui.login;
+package com.example.myapplication.ui.login;
 
 import androidx.annotation.Nullable;
 
