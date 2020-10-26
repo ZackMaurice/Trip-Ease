@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:566912442091:android:d7d9480a2efddaf41ba8ae",
         "android_client_info": {
-          "package_name": "com.TripEase.tripease"
+          "package_name": "com.example.myapplication"
         }
       },
       "oauth_client": [

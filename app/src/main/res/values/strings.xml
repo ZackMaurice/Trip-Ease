@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Trip Ease</string>
     <string name="title_itinerary">Itinerary</string>
     <string name="title_checklist">Checklist</string>
     <string name="title_budget">Budget</string>
@@ -19,5 +19,5 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
-    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_login">Trip Ease</string>
 </resources>
