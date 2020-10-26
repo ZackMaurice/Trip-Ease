@@ -11,37 +11,41 @@
         android:id="@+id/registerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="391dp"
         android:text="Register"
-        tools:layout_editor_absoluteX="159dp"
-        tools:layout_editor_absoluteY="391dp" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="159dp" />
 
     <EditText
         android:id="@+id/registerPassword"
-        android:hint="Password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="267dp"
         android:ems="10"
+        android:hint="Password"
         android:inputType="textPassword"
-        tools:layout_editor_absoluteX="98dp"
-        tools:layout_editor_absoluteY="267dp" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="98dp" />
 
     <EditText
         android:id="@+id/confirmPassword"
-        android:hint="Confirm Password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="323dp"
         android:ems="10"
+        android:hint="Confirm Password"
         android:inputType="textPassword"
-        tools:layout_editor_absoluteX="100dp"
-        tools:layout_editor_absoluteY="323dp" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="100dp" />
 
     <EditText
         android:id="@+id/registerEmail"
-        android:hint="Register Email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="208dp"
         android:ems="10"
+        android:hint="Register Email"
         android:inputType="textEmailAddress"
-        tools:layout_editor_absoluteX="100dp"
-        tools:layout_editor_absoluteY="208dp" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="100dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
