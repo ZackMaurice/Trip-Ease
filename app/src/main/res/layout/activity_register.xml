@@ -11,41 +11,49 @@
         android:id="@+id/registerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="159dp"
+        android:layout_marginLeft="159dp"
         android:layout_marginTop="391dp"
         android:text="Register"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="159dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/registerPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="98dp"
+        android:layout_marginLeft="98dp"
         android:layout_marginTop="267dp"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="98dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/confirmPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginLeft="100dp"
         android:layout_marginTop="323dp"
         android:ems="10"
         android:hint="Confirm Password"
         android:inputType="textPassword"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="100dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/registerEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginLeft="100dp"
         android:layout_marginTop="208dp"
         android:ems="10"
         android:hint="Register Email"
         android:inputType="textEmailAddress"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="100dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
