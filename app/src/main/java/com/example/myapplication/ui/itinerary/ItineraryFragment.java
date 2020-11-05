@@ -60,7 +60,6 @@ public class ItineraryFragment extends Fragment {
         user = mAuth.getCurrentUser();
 
         scroll = root.findViewById(R.id.itinerary_scroll);  // Assigning the scroll linear layout
-
         if(user != null) {
             String emailId = user.getEmail().split("@")[0]; // get the user's email before the @, temporarily using this as an identifier for the database
             ref = database.getReference("itinerary/"+emailId);
@@ -123,6 +122,9 @@ public class ItineraryFragment extends Fragment {
             }
 
         });
+
+
+
 
 
 
