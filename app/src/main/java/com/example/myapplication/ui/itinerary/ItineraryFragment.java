@@ -32,7 +32,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-
 public class ItineraryFragment extends Fragment {
 
     private ItineraryViewModel itineraryViewModel;
@@ -46,6 +45,7 @@ public class ItineraryFragment extends Fragment {
     private DatabaseReference ref;
 
     private ArrayList<String> list = new ArrayList<>();
+    private ArrayList<Calendar> dates = new ArrayList<>();
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -59,15 +59,13 @@ public class ItineraryFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
 
-        scroll = root.findViewById(R.id.itinerary_scroll);  // Assigning the scroll linear layout
-        if(user != null) {
-            String emailId = user.getEmail().split("@")[0]; // get the user's email before the @, temporarily using this as an identifier for the database
-            ref = database.getReference("itinerary/"+emailId);
-        }else{
-            ref = database.getReference("itinerary/pub");   // public directory for current error handling
-        }
 
-        System.out.println("\n\nCurrent User: "+user.getEmail());
+
+
+
+        scroll = root.findViewById(R.id.itinerary_scroll);  // Assigning the scroll linear layout
+
+        ref = database.getReference("itinerary/"+user.getUid());
 
         init(root);
 
@@ -108,7 +106,12 @@ public class ItineraryFragment extends Fragment {
 
                 if(list!=null) {
                     for (int i = 0; i < list.size(); i++) {
-                        createTask(new Task(list.get(i)));
+                        Task t = new Task(list.get(i));
+                        if(!isDuplicate(t)){
+                            dates.add(t.getCalendar());
+                            createTask(t);
+                        }
+
 
                     }
                 }else {
@@ -157,13 +160,17 @@ public class ItineraryFragment extends Fragment {
 
 
             Task t = new Task(newTask,calendar);   // new Task to be stored in the ArrayList and the servers
-
+            if(!isDuplicate(t)){
+                dates.add(t.getCalendar());
+                createTask(t);
+                list.add(t.toString()); // save the data as an ArrayList of strings to be used on the database
+            }
 
 
             addView.setVisibility(View.GONE);   // make the addView invisible and bring back the itinerary
             mainView.setVisibility(View.VISIBLE);
 
-            list.add(t.toString()); // save the data as an ArrayList of strings to be used on the database
+
             ref.setValue(list); // send the string
         });
 
@@ -196,7 +203,17 @@ public class ItineraryFragment extends Fragment {
 
 
 
+    private boolean isDuplicate(Task t){
+        return dates.contains(t.getCalendar());
 
+    }
 
+//    private void reSort(){
+//        if(list != null){
+//            list.sort();
+//
+//        }
+//
+//    }
 
 }
