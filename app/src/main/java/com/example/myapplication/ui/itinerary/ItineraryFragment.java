@@ -208,12 +208,5 @@ public class ItineraryFragment extends Fragment {
 
     }
 
-//    private void reSort(){
-//        if(list != null){
-//            list.sort();
-//
-//        }
-//
-//    }
 
 }
