@@ -35,20 +35,36 @@ public class ChecklistFragment extends Fragment {
         arrayList = new ArrayList<String>();
         adapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_list_item_1, arrayList);
         list.setAdapter(adapter);
-        onBtnClick();
+        initListeners();
 
         return root;
     }
 
-    public void onBtnClick(){
+    public void initListeners(){
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String result = text.getText().toString();
                 arrayList.add(result);
                 adapter.notifyDataSetChanged();
+                text.getText().clear();
             }
         });
+
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                arrayList.remove(position);
+
+                adapter.notifyDataSetChanged();
+
+                //Toast.makeText(ChecklistFragment.this, "Item Deleted", Toast.LENGTH_LONG).show();
+
+                return true;
+            }
+        });
+
 
     }
 }
