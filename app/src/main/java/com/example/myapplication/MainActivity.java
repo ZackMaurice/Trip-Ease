@@ -1,11 +1,14 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -14,7 +17,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 public class MainActivity extends AppCompatActivity {
-    private FirebaseAuth newFireBaseAuth;
+    private FirebaseAuth fAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,5 +32,26 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+    }
+
+    public void onStart(){
+        super.onStart();
+        //Makes sure the user isn't already logged in
+        if(FirebaseAuth.getInstance().getCurrentUser()== null){
+            System.out.println("No user is signed in.. somehow?");
+        }
+        else{
+            updateUI(FirebaseAuth.getInstance().getCurrentUser());
+        }
+    }
+
+    public void updateUI(FirebaseUser account){
+        if(account != null){
+            System.out.println("User has signed into the Main Activity");
+            System.out.println(FirebaseAuth.getInstance().getCurrentUser());
+
+        }else {
+            Toast.makeText(this,"Something went wrong..",Toast.LENGTH_SHORT).show();
+        }
     }
 }
