@@ -77,6 +77,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         mGuest.setOnClickListener(v -> {
+            mProgress.setVisibility(View.VISIBLE);
             fAuth.signInAnonymously()
                     .addOnCompleteListener(this, task -> {
                         if (task.isSuccessful()) {
