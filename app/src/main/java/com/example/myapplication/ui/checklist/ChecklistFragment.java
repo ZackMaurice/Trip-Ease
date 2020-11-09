@@ -35,6 +35,12 @@ public class ChecklistFragment extends Fragment {
         arrayList = new ArrayList<String>();
         adapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_list_item_1, arrayList);
         list.setAdapter(adapter);
+        arrayList.add("Tent");
+        arrayList.add("Bugspray");
+        arrayList.add("Cooler");
+        arrayList.add("Tarp");
+        arrayList.add("Lighter");
+        arrayList.add("Sweater");
         initListeners();
 
         return root;
@@ -45,9 +51,13 @@ public class ChecklistFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String result = text.getText().toString();
-                arrayList.add(result);
-                adapter.notifyDataSetChanged();
-                text.getText().clear();
+
+                System.out.println(result);
+                if(result.length() != 0){
+                    arrayList.add(result);
+                    adapter.notifyDataSetChanged();
+                    text.getText().clear();
+                }
             }
         });
 
