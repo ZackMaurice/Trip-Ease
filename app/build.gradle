@@ -50,5 +50,7 @@ dependencies {
     // Declare the dependency for the Firebase Authentication library
     implementation 'com.google.firebase:firebase-auth'
     implementation 'com.google.android.gms:play-services-auth:18.1.0'
+    // Declare the dependency for the Realtime Database library
+    implementation 'com.google.firebase:firebase-database'
 
 }

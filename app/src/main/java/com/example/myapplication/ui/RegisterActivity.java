@@ -1,75 +1,58 @@
 package com.example.myapplication.ui;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
+import com.example.myapplication.ui.login.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class RegisterActivity extends AppCompatActivity {
-    private FirebaseAuth newUser = FirebaseAuth.getInstance();
-    public static final String TAG = "MainActivity";
+    EditText registerPw, confirmPw, newEmail;
+    Button loginButton, registerButton;
+    FirebaseAuth fAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        final EditText registerEmail = findViewById(R.id.registerEmail);
-        final EditText registerPassword = findViewById(R.id.registerPassword);
-        final EditText confirmPassword = findViewById(R.id.confirmPassword);
-        final Button registerButton = findViewById(R.id.registerButton);
 
-        registerButton.setOnClickListener(new Button.OnClickListener(){
-            public void onClick(View v){
-                //TODO: Add error messages for failed passwords confirmation/emails
-                createAccount(registerEmail.getText().toString(), confirmPassword.getText().toString());
-            }
+        //Setup the variables to be used from the view.
+
+        newEmail       = findViewById(R.id.registerEmail);
+        registerPw     = findViewById(R.id.registerPw1);
+        confirmPw      = findViewById(R.id.registerPw2);
+        loginButton    = findViewById(R.id.loginBtn);
+        registerButton = findViewById(R.id.registerBtn);
+
+        fAuth = FirebaseAuth.getInstance();
+
+        registerButton.setOnClickListener(v -> {
+            String email = newEmail.getText().toString().trim();
+            String password = registerPw.getText().toString().trim();
+
+            //TODO: SET PARAMATERS FOR PASSWORD CONFIRMATION
+
+            fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+                if(task.isSuccessful()){
+                    Toast.makeText(RegisterActivity.this, "Welcome to Trip-Ease!", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                }else {
+                    Toast.makeText(RegisterActivity.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
         });
-
+        loginButton.setOnClickListener(v -> {
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+            finish();
+        });
     }
-    public void createAccount(String email, String password){
-        newUser.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "createUserWithEmail:success");
-                            FirebaseUser user = newUser.getCurrentUser();
-                            updateUI(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(RegisterActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                            updateUI(null);
-                        }
 
-                        // ...
-                    }
-                });
-    }
-    public void updateUI(FirebaseUser account){
-        if(account != null){
-            Toast.makeText(this,"U Signed In successfully",Toast.LENGTH_LONG).show();
-            startActivity(new Intent(this, MainActivity.class));
 
-        }else {
-            Toast.makeText(this,"U Didnt signed in",Toast.LENGTH_LONG).show();
-        }
-    }
 }
