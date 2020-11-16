@@ -3,6 +3,7 @@ package com.example.myapplication.ui.checklist;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,6 +35,7 @@ public class ChecklistFragment extends Fragment {
          recyclerView.setHasFixedSize(true);
          recyclerView.setAdapter(adapter);
          recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+         recyclerView.addItemDecoration(new DividerItemDecoration(this.getActivity(), LinearLayout.VERTICAL));
 
          addButton = root.findViewById(R.id.button_addItem);
          text = root.findViewById(R.id.text_addItem);
