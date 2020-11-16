@@ -6,10 +6,16 @@ public class ChecklistViewModelRecycle {
     private String text;
     private boolean isChecked;
 
+    public ChecklistViewModelRecycle() {
+        setText("");
+        isChecked = false;
+    }
     public ChecklistViewModelRecycle(@NonNull final String newText) {
         setText(newText);
         isChecked = false;
     }
+
+
 
     @NonNull
     public String getText() {
@@ -23,9 +29,6 @@ public class ChecklistViewModelRecycle {
     public boolean getChecked(){ return isChecked; }
 
     public void check(){
-        if(isChecked == false)
-            isChecked = true;
-        else
-            isChecked = false;
+        isChecked = !isChecked;
     }
 }
