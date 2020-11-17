@@ -32,7 +32,7 @@ import java.util.ArrayList;
 public class ChecklistFragment extends Fragment {
      EditText text;
      Button addButton;
-     ArrayList<ChecklistViewModelRecycle> checklist;
+     ArrayList<ChecklistViewModel> checklist;
      ChecklistAdapter adapter;
      RecyclerView recyclerView;
 
@@ -46,10 +46,12 @@ public class ChecklistFragment extends Fragment {
          View root = inflater.inflate(R.layout.fragment_checklist, container, false);
          checklist = new ArrayList<>();
 
+         //Firebase instantiations
          mAuth = FirebaseAuth.getInstance();
          user = mAuth.getCurrentUser();
          ref = database.getReference("checklist/"+user.getUid());
 
+         //RecyclerView instantiations
          adapter = new ChecklistAdapter(checklist);
          recyclerView = root.findViewById(R.id.recyclerview);
          recyclerView.setHasFixedSize(true);
@@ -57,40 +59,43 @@ public class ChecklistFragment extends Fragment {
          recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
          recyclerView.addItemDecoration(new DividerItemDecoration(this.getActivity(), LinearLayout.VERTICAL));
 
+         //XML item instantiations
          addButton = root.findViewById(R.id.button_addItem);
          text = root.findViewById(R.id.text_addItem);
-         initDatabase();
-         adapter.notifyDataSetChanged();
+
+         //Initialization helpers
          initListeners();
          enableSwipeDelete();
+         initDatabase();
+
          return root;
      }
 
-     public void initListeners() {
+    //Setting up addItem button listener
+     public void initListeners () {
          addButton.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
                  String result = text.getText().toString();
-                 if(result.length() != 0){
-                     checklist.add(new ChecklistViewModelRecycle(result));
+                 if (result.length() != 0) {
+                     checklist.add(new ChecklistViewModel(result));
                      text.getText().clear();
                      ref.setValue(checklist);
                      adapter.notifyDataSetChanged();
-                     for (int i=0; i<checklist.size(); i++)
-                         System.out.println(checklist.get(i).getText());
                  }
              }
          });
      }
 
-     public void enableSwipeDelete(){
+     //Setting up swipe to delete
+     public void enableSwipeDelete () {
          SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(getContext()) {
              @Override
              public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
 
 
                  final int position = viewHolder.getAdapterPosition();
-                 final ChecklistViewModelRecycle item = checklist.get(position);
+                 final ChecklistViewModel item = checklist.get(position);
                  checklist.remove(position);
                  ref.setValue(checklist);
                  adapter.notifyItemRemoved(position);
@@ -101,24 +106,21 @@ public class ChecklistFragment extends Fragment {
          itemTouchhelper.attachToRecyclerView(recyclerView);
      }
 
+    //Setting up Firebase integration
+     public void initDatabase () {
+         ref.addValueEventListener(new ValueEventListener() {
+             @Override
+             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                 checklist.clear();
+                 for (DataSnapshot d : dataSnapshot.getChildren()) {
+                     checklist.add(d.getValue(ChecklistViewModel.class));
+                 }
+                 adapter.notifyDataSetChanged();
+             }
+             public void onCancelled(@NonNull DatabaseError error) {
+                 System.out.println("\n\nLoad failed.\n");
+             }
 
-
-    public void initDatabase() {
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                checklist.clear();
-                for (DataSnapshot d : dataSnapshot.getChildren()){
-                    checklist.add(d.getValue(ChecklistViewModelRecycle.class));
-                }
-                adapter.notifyDataSetChanged();
-
-            }
-
-            public void onCancelled(@NonNull DatabaseError error) {
-                System.out.println("\n\nLoad failed.\n");
-            }
-
-        });
-    }
+         });
+     }
 }
