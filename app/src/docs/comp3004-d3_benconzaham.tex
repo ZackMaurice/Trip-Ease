@@ -22,28 +22,36 @@ Graham Shannon
 
 	\maketitle
 	\pagebreak
-	\section*{Architectural description}
-		The intent of TripEase is, above all else, to provide a simple way to keep track of the inanities of vacationing.
-		As a team, we broke this problem down into what we thought to be the three most important,
-		yet tedious aspects of planning and executing a successful vacation:
-		\begin{itemize}
-			\item Packing a suitcase
-			\item Organizing your time
-			\item Managing spending
-		\end{itemize}
-		Our app's overall architecture was based around these three tasks.
-		One of the main themes we chose as a pillar was simpicity and easy of use.
-		Keeping the app divided into four tabs (one additional tab for settings and other corner cases) accomplished this.
+	\section*{Architectural Description}
+	The intent of TripEase is, above all else, to provide a simple way to keep track of the inanities of vacationing.
+	As a team, we broke this problem down into what we thought to be the three most important,
+	yet tedious aspects of planning and executing a successful vacation:
+	\begin{itemize}
+		\item Packing a suitcase
+		\item Organizing your time
+		\item Managing spending
+	\end{itemize}
+	Our app's overall architecture was based around these three tasks.
+	One of the main themes we chose as a pillar was simpicity and easy of use.
+	Keeping the app divided into four tabs (one additional tab for settings and other corner cases) accomplished this.
 
-		The second pillar we chose was on- and offline capability for all primary features.
-		Firebase was our chosen storage medium, and it has allowed seamless cloud integration from day one.
+	The second pillar we chose was on- and offline capability for all primary features.
+	Firebase was our chosen storage medium, and it has allowed seamless cloud integration from day one.
 
-		The MVC architecture was a perfect choice for this application, as it mainly displays information statically,
-		and allows the user to interactively update.
-		Without any external systems other than the firebase cloudstore, the app only needs to interact with the user,
-		then update the server when needed.
+	The MVC architecture was a perfect choice for this application, as it mainly displays information statically,
+	and allows the user to interactively update.
+	Without any external systems other than the firebase cloudstore, the app only needs allow the user to interact,
+	then update the server when needed.
 
+	Over-all, the goal of TripEase is to remove the stress of mundane vacationing tasks,
+	allowing users to fully take advantage of the time they have to themselves;
+	or, in the case of working travellers, limit any external sourced of stress and uncertainty
+	so that they may be as productive as possible.
 
+	With this goal in mind, making TripEase as intuitive and user friendly as possible,
+	without any extraneous features that could distract from its mission statement is crucial.
+	Limiting the functionality to these core features,
+	instead of providing a cluttered, "feature rich experience" accomplishes this.
 
 	\pagebreak
 	\section*{System Design}
