@@ -1,0 +1,10 @@
+Wednesday October 7
+	Working on UI - 60 minutes
+
+Friday October 9
+	Group Meeting - 60 minutes
+		Setting up Firebase
+		Weekly task: Get UI finished
+
+Saturday October 10
+	Finishing checklist UI - 120 minutes

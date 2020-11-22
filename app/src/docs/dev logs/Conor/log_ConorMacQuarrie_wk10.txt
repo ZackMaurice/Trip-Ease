@@ -1,0 +1,23 @@
+Monday November 16
+	Implementing swipe to delete - 120 minutes
+	Group Meeting - 30 minutes
+	
+Tuesday November 17
+	Documenting and cleaning up code - 60 minutes
+	Group Meeting - 60 minutes
+		Splitting D3
+		
+Friday November 20
+	Class Diagram
+		Reasearch - 60 minutes
+		Scoping - 60 minutes
+		UML - 120 minutes
+	
+Saturday November 21
+	Finishing UML - 180 minutes
+	
+Sunday November 22
+	Component diagram - 120 minutes
+	Group meeting - 90 minutes	
+		Assembling D3
+		

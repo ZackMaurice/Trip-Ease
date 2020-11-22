@@ -1,0 +1,18 @@
+Monday November 9
+	Dry run for D2 presentation - 60 minutes
+	Looking into RecyclerView features - 60 minutes
+	
+Tuesday November 10 
+	Looking into RecyclerView implementation - 120 minutes
+	
+Wednesday November 11
+	Starting switch to RecyclerView - 150 minutes
+	
+Friday November 13
+	Working on RecyclerView - 90 minutes
+	
+Sunday November 15
+	Finishing RecyclerView - 200 minutes
+	Adding dividers for list items - 30 minutes
+	
+
