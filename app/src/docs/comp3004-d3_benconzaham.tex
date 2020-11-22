@@ -55,7 +55,37 @@ Graham Shannon
 
 	\pagebreak
 	\section*{System Design}
+
+
+
+
+
+
+
+	2nd part\\
+
+	In our app, we minimize coupling and accommodate changing requirements by using fragments and having separate data segments between them.
+	The data for any given fragment is stored within itself, and on the database.
+	The Checklist fragment has its list items all stored in its own code, the Itinerary fragment has its tasks stored within its section, and the Budget fragment has its own data stored within itself as well.\\
+
+
+	By using fragments, we can easily accommodate a new addition to the program, or even the removal of another feature from the program if it is no longer deemed necessary.
+	To do so, we would simply delete all calls to the fragment and then delete the fragment itself.
+	To add a new feature/tab to the program, we would add a new fragment and name it according to the new feature and purpose , and create a route to the fragment through our navigation bar.\\
+
+
+	In the future if we were to get enough additional features to merit enough additional fragments, we could take an encapsulated approach to categorizing our fragments so that we can separate them by main focus.
+
+
 	\pagebreak
 	\section*{Task Breakdown}
-
-\end{document}
+	We distributed tasks based on which main parts of the program someone would work on, and with four members it was quite simple for us:
+	\begin{itemize}
+		\item Login\&Registration as well as the initial firebase setup was done by Graham
+		\item Checklist fragment was done by Conor
+		\item Itinerary fragment was done by Zacharia
+		\item Budget fragment was done by Benjamin
+	\end{itemize}
+	By splitting the app into four main parts, it allowed each of us to work independently on our own sections and regroup by pushing to the GitHub repository and catching each other up quickly on what was done.
+	From this point, we could test each other's work and decide as a group what everyone should work on for the next week or two.
+	\end{document}
