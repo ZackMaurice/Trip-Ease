@@ -1,0 +1,8 @@
+Monday Sept 21
+	Group Meeting - 60 minutes
+		Creating GitHub repo
+		Weekly task: Start learning Android Studio
+
+    Weekly Work
+        Learning android studio - 5 hours
+        Discovering firebase - 5 hours

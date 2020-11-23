@@ -55,6 +55,22 @@ Graham Shannon
 
 	\pagebreak
 	\section*{System Design}
+
+	The design patterns we chose to implement when creating the application was actually more of a mashup than a singular approach. We chose to use a singleton approach
+	for our different views as we had concluded that multiple instances of the same view/object occuring would be unnecessary. An example of this would be the way we redirected
+	the User Interface. Instead of generating a new view for the user to use as they use the application, we would simply return the already constructed view from earlier.
+	This meant that there was less work to be done in the background as the user navigated the application. Since we chose to go with a bottom bar form of navigation-
+	this gave us the situation where the clients/users would have a well known access point for everything they need.
+
+	Within the views themselves we decided to go with a more composite approach, following implementation of a template method. Wherein the users created lists/objects would instead of being treated as
+	individual elements would be treated instead as a list iteself. The primary reason for this approach, was to allow us the opportunity of having a community based approach to templating.
+	A secondary reason for this was that the objects themselves within the lists, would be better treated identically than individually since they are to be able to be maintained,
+	deleted, or created- it is best to compound them into the same classification. This would allow us to better manipulate the elements of the list in a more streamlined approach,
+	and have it more maintainable for future features to be added and or object types. The reason for the approach of templating the views, in terms of creating a skeleton that the user can
+	fill with the parts of their chosing, was to make the process much more transferrable between devices and users themselves. The idea behind having the structure of each of the views
+	be a template in design, was for future features. The main one being, users ability to upload their templates- and others being able to download said templates. The reason for this was
+	so that a community could potentially develop and users of the application could use each others templates for things such as; packing lists, budgetting, and or iteneraries/scheduling.
+
 	\pagebreak
 	\section*{Task Breakdown}
 

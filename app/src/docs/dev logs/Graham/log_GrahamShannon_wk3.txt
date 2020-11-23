@@ -1,0 +1,15 @@
+Monday Sept 28
+	Group Meeting - 60 minutes
+		Created Android Studio Project
+		Weekly task: Start working on project UI
+		Splitting project sections:
+			Conor - Checklist
+			Ben - Budget
+			Zack - Itinerary
+			Graham - Database and authentication
+
+Weekly Work
+	Starting Checklist UI - 120 minutes
+
+Friday Oct 2
+	Working on Checklist UI - 150 minutes
