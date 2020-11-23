@@ -2,6 +2,7 @@
 
 \usepackage{graphicx}
 \usepackage{subcaption}
+\usepackage{hyperref}
 
 \title{TripEase - Team Benconzaham}
 \author{
@@ -42,6 +43,9 @@ Graham Shannon
 	and allows the user to interactively update.
 	Without any external systems other than the firebase cloudstore, the app only needs allow the user to interact,
 	then update the server when needed.
+	If we were to implement any real-time features, such as a flight status tracker,
+	then the observer pattern would provide beneficial aspects;
+	as it stands, though, there are no features that would have value added from such an implementation.
 
 	Over-all, the goal of TripEase is to remove the stress of mundane vacationing tasks,
 	allowing users to fully take advantage of the time they have to themselves;
@@ -53,6 +57,10 @@ Graham Shannon
 	Limiting the functionality to these core features,
 	instead of providing a cluttered, "feature rich experience" accomplishes this.
 
+	\pagebreak
+	\includegraphics[angle=270,scale=0.4]{Trip-Ease Component Diagram.png}
+	\linebreak
+	\href{https://www.figma.com/file/VlRhkIKiCqkBc3qPGubwtc/Trip-Ease-Component-Diagram}{Figma Link}
 	\pagebreak
 	\section*{System Design}
 
@@ -85,6 +93,10 @@ Graham Shannon
 	In the future if we were to get enough additional features to merit enough additional fragments, we could take an encapsulated approach to categorizing our fragments so that we can separate them by main focus.
 
 
+	\pagebreak
+	\includegraphics[angle=270,scale=0.2]{Trip-Ease Class Diagram.png}
+	\linebreak
+	\href{https://www.figma.com/file/TNWldp7eknAI9QecDTNVad/Trip-Ease-Class-Diagram}{Figma Link}
 	\pagebreak
 	\section*{Task Breakdown}
 	We distributed tasks based on which main parts of the program someone would work on, and with four members it was quite simple for us:
