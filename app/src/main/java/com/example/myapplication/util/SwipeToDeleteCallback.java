@@ -17,6 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
 
+//Disclaimer: This class is heavily based off Kotlin code that I found in this github repository: https://github.com/kitek/android-rv-swipe-delete
+//I have converted it to Java and have made changes to get it to work with our project
+
 abstract public class SwipeToDeleteCallback extends ItemTouchHelper.Callback {
 
     Context mContext;
