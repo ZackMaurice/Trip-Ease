@@ -10,14 +10,20 @@ import android.widget.*;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
-import com.example.myapplication.ui.checklist.ChecklistAdapter;
+import com.example.myapplication.ui.checklist.ChecklistViewModel;
 import com.example.myapplication.util.Currency;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -33,7 +39,12 @@ public class BudgetFragment extends Fragment {
 	TextView fromAmount, toAmount;
 	Button newExpense, addExpense;
 	ViewGroup newExpensePrompt;
-	RecyclerView expenseList;
+	RecyclerView recyclerView;
+
+	private FirebaseAuth mAuth;
+	private FirebaseUser user;
+	private FirebaseDatabase database = FirebaseDatabase.getInstance();
+	private DatabaseReference ref;
 
 	public View onCreateView(@NonNull LayoutInflater inflater,
 							 ViewGroup container, Bundle savedInstanceState) {
@@ -41,13 +52,20 @@ public class BudgetFragment extends Fragment {
 
 		expenses = new ArrayList<>();
 
+		//Firebase instantiations
+		mAuth = FirebaseAuth.getInstance();
+		user = mAuth.getCurrentUser();
+		ref = database.getReference("budget/"+user.getUid());
+		initDatabase();
+
+
 		//RecyclerView instantiations
 		adapter = new BudgetAdapter(expenses);
-		expenseList = root.findViewById(R.id.expenseList);
-		expenseList.setHasFixedSize(true);
-		expenseList.setAdapter(adapter);
-		expenseList.setLayoutManager(new LinearLayoutManager(getContext()));
-		expenseList.addItemDecoration(new DividerItemDecoration(this.getActivity(), LinearLayout.VERTICAL));
+		recyclerView = root.findViewById(R.id.expenseList);
+		recyclerView.setHasFixedSize(true);
+		recyclerView.setAdapter(adapter);
+		recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+		recyclerView.addItemDecoration(new DividerItemDecoration(this.getActivity(), LinearLayout.VERTICAL));
 
 		fromCurrency = root.findViewById(R.id.fromCurrency);
 		fromAmount = root.findViewById(R.id.fromAmount);
@@ -143,13 +161,13 @@ public class BudgetFragment extends Fragment {
 
 		//show newExpensePrompt on click
 		newExpense.setOnClickListener(v->{
-			expenseList.setVisibility(View.GONE);
+			recyclerView.setVisibility(View.GONE);
 			newExpensePrompt.setVisibility(View.VISIBLE);
 		});
 
 		addExpense.setOnClickListener(v->{
 			newExpensePrompt.setVisibility(View.GONE);
-			expenseList.setVisibility(View.VISIBLE);
+			recyclerView.setVisibility(View.VISIBLE);
 
 			//retrieve and reset user inputs
 			EditText expenseNameItem = newExpensePrompt.findViewById(R.id.expenseName),
@@ -206,6 +224,8 @@ public class BudgetFragment extends Fragment {
 
 		expenses.add(expense);
 
+		ref.setValue(expenses);
+
 		adapter.notifyDataSetChanged();
 	}
 
@@ -213,5 +233,23 @@ public class BudgetFragment extends Fragment {
 		ignoreChanges = true;
 		textView.setText(amount);
 		ignoreChanges = false;
+	}
+
+	//Setting up Firebase integration
+	public void initDatabase () {
+		ref.addValueEventListener(new ValueEventListener() {
+			@Override
+			public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+				expenses.clear();
+				for (DataSnapshot d : dataSnapshot.getChildren()) {
+					expenses.add(d.getValue(BudgetViewModel.class));
+				}
+				adapter.notifyDataSetChanged();
+			}
+			public void onCancelled(@NonNull DatabaseError error) {
+				System.out.println("\n\nLoad failed.\n");
+			}
+
+		});
 	}
 }
