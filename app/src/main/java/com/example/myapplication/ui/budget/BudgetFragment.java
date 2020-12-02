@@ -11,12 +11,14 @@ import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.ui.checklist.ChecklistViewModel;
 import com.example.myapplication.util.Currency;
+import com.example.myapplication.util.SwipeToDeleteCallback;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -75,6 +77,8 @@ public class BudgetFragment extends Fragment {
 		newExpense = root.findViewById(R.id.newExpense);
 		addExpense = root.findViewById(R.id.addExpense);
 		newExpensePrompt = root.findViewById(R.id.newExpensePrompt);
+
+		enableSwipeDelete();
 
 
 		//Create an ArrayAdapter using the string array and a default spinner layout
@@ -233,6 +237,25 @@ public class BudgetFragment extends Fragment {
 		ignoreChanges = true;
 		textView.setText(amount);
 		ignoreChanges = false;
+	}
+
+	//Setting up swipe to delete
+	public void enableSwipeDelete () {
+		SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(getContext()) {
+			@Override
+			public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+
+
+				final int position = viewHolder.getAdapterPosition();
+				final BudgetViewModel item = expenses.get(position);
+				expenses.remove(position);
+				ref.setValue(expenses);
+				adapter.notifyItemRemoved(position);
+			}
+		};
+
+		ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeToDeleteCallback);
+		itemTouchhelper.attachToRecyclerView(recyclerView);
 	}
 
 	//Setting up Firebase integration
