@@ -144,7 +144,7 @@
 
 	</androidx.constraintlayout.widget.ConstraintLayout>
 
-	<LinearLayout
+	<androidx.recyclerview.widget.RecyclerView
 		android:id="@+id/expenseList"
 		android:layout_width="match_parent"
 		android:layout_height="0dp"
@@ -152,7 +152,7 @@
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintTop_toBottomOf="@+id/currencyConverter">
 
-	</LinearLayout>
+	</androidx.recyclerview.widget.RecyclerView>
 
 	<Button
 		android:id="@+id/newExpense"

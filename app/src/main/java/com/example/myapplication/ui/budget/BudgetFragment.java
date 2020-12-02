@@ -11,31 +11,43 @@ import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.ui.checklist.ChecklistAdapter;
 import com.example.myapplication.util.Currency;
 
 import java.util.ArrayList;
 
 public class BudgetFragment extends Fragment {
 
-	private BudgetViewModel budgetViewModel;
 	private TextWatcher fromAmountWatcher, toAmountWatcher;
 	private boolean ignoreChanges = false; //prevent infinite loops caused by TextWatchers recursively triggering each other
 
-	private ArrayList<BudgetItem> expenses;
+	private ArrayList<BudgetViewModel> expenses;
+	private BudgetAdapter adapter;
 
 	Spinner fromCurrency, toCurrency;
 	TextView fromAmount, toAmount;
 	Button newExpense, addExpense;
-	ViewGroup expenseList, newExpensePrompt;
+	ViewGroup newExpensePrompt;
+	RecyclerView expenseList;
 
 	public View onCreateView(@NonNull LayoutInflater inflater,
 							 ViewGroup container, Bundle savedInstanceState) {
-		budgetViewModel = ViewModelProviders.of(this).get(BudgetViewModel.class);
 		View root = inflater.inflate(R.layout.fragment_budget, container, false);
 
 		expenses = new ArrayList<>();
+
+		//RecyclerView instantiations
+		adapter = new BudgetAdapter(expenses);
+		expenseList = root.findViewById(R.id.expenseList);
+		expenseList.setHasFixedSize(true);
+		expenseList.setAdapter(adapter);
+		expenseList.setLayoutManager(new LinearLayoutManager(getContext()));
+		expenseList.addItemDecoration(new DividerItemDecoration(this.getActivity(), LinearLayout.VERTICAL));
 
 		fromCurrency = root.findViewById(R.id.fromCurrency);
 		fromAmount = root.findViewById(R.id.fromAmount);
@@ -44,7 +56,6 @@ public class BudgetFragment extends Fragment {
 
 		newExpense = root.findViewById(R.id.newExpense);
 		addExpense = root.findViewById(R.id.addExpense);
-		expenseList = root.findViewById(R.id.expenseList);
 		newExpensePrompt = root.findViewById(R.id.newExpensePrompt);
 
 
@@ -183,49 +194,24 @@ public class BudgetFragment extends Fragment {
 	 * @param amount The quantity of the expense
 	 */
 	private void addNewExpense(String name, float amount) {
-		addNewExpense(new BudgetItem(name, amount));
+		addNewExpense(new BudgetViewModel(name, amount));
 	}
 
 	/**
 	 * @param expense the BudgetItem that represents this expense.
 	 */
-	private void addNewExpense(BudgetItem expense) {
+	private void addNewExpense(BudgetViewModel expense) {
 		String name = expense.name;
 		float amount = expense.amount;
 
 		expenses.add(expense);
 
-		LinearLayout expenseItem = new LinearLayout(getContext());
-
-		TextView nameView = new TextView(getContext()),
-				amountView = new TextView(getContext());
-
-		nameView.setText(name);
-		nameView.setTextSize(24);
-
-		amountView.setText(Float.toString(amount));
-		amountView.setTextSize(18);
-		amountView.setPadding(32, 0, 0, 0);
-
-		expenseItem.addView(nameView);
-		expenseItem.addView(amountView);
-
-		expenseList.addView(expenseItem, 0);
+		adapter.notifyDataSetChanged();
 	}
 
 	private void setCurrencyText(TextView textView, String amount) {
 		ignoreChanges = true;
 		textView.setText(amount);
 		ignoreChanges = false;
-	}
-
-	private static class BudgetItem {
-		public final String name;
-		public final float amount;
-
-		public BudgetItem(String name, Float amount) {
-			this.name = name;
-			this.amount = amount;
-		}
 	}
 }

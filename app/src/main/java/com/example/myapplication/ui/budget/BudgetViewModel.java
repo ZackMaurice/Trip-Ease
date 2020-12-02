@@ -3,5 +3,15 @@ package com.example.myapplication.ui.budget;
 import androidx.lifecycle.ViewModel;
 
 public class BudgetViewModel extends ViewModel {
-	public BudgetViewModel() {}
+	String name;
+	float amount;
+
+	public BudgetViewModel(final String newText, final float amount) {
+		name = newText;
+		this.amount = amount;
+	}
+
+	public BudgetViewModel() {
+		this("", 0);
+	}
 }
