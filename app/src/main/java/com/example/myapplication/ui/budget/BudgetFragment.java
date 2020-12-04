@@ -48,9 +48,11 @@ public class BudgetFragment extends Fragment {
 	private FirebaseDatabase database = FirebaseDatabase.getInstance();
 	private DatabaseReference ref;
 
+	private View root;
+
 	public View onCreateView(@NonNull LayoutInflater inflater,
 							 ViewGroup container, Bundle savedInstanceState) {
-		View root = inflater.inflate(R.layout.fragment_budget, container, false);
+		root = inflater.inflate(R.layout.fragment_budget, container, false);
 
 		expenses = new ArrayList<>();
 
@@ -231,12 +233,26 @@ public class BudgetFragment extends Fragment {
 		ref.setValue(expenses);
 
 		adapter.notifyDataSetChanged();
+		updateTotal();
 	}
 
 	private void setCurrencyText(TextView textView, String amount) {
 		ignoreChanges = true;
 		textView.setText(amount);
 		ignoreChanges = false;
+	}
+
+	public float getTotal() {
+		float total = 0f;
+		for(BudgetViewModel item : expenses) {
+			total += item.amount;
+		}
+
+		return total;
+	}
+
+	private void updateTotal() {
+		((TextView) root.findViewById(R.id.budget_total)).setText(String.format("Total: %s", Currency.CAD.format(getTotal(), true)));
 	}
 
 	//Setting up swipe to delete
@@ -251,6 +267,7 @@ public class BudgetFragment extends Fragment {
 				expenses.remove(position);
 				ref.setValue(expenses);
 				adapter.notifyItemRemoved(position);
+				updateTotal();
 			}
 		};
 

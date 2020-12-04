@@ -48,4 +48,6 @@ public class BudgetAdapter extends RecyclerView.Adapter<BudgetAdapter.BudgetView
             itemAmount = itemView.findViewById(R.id.itemAmount);
         }
     }
+
+    
 }
