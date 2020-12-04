@@ -145,6 +145,25 @@
 
 	</androidx.constraintlayout.widget.ConstraintLayout>
 
+	<EditText
+		android:id="@+id/budget_total_amount"
+		android:layout_width="wrap_content"
+		android:layout_height="0dp"
+		android:ems="10"
+		android:inputType="numberDecimal"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/currencyConverter" />
+
+	<TextView
+		android:id="@+id/textView4"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="Total Budget:"
+		app:layout_constraintBottom_toBottomOf="@+id/budget_total_amount"
+		app:layout_constraintEnd_toStartOf="@+id/budget_total_amount"
+		app:layout_constraintTop_toBottomOf="@+id/currencyConverter" />
+
 	<androidx.recyclerview.widget.RecyclerView
 		android:id="@+id/expenseList"
 		android:layout_width="match_parent"
@@ -154,8 +173,7 @@
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toBottomOf="@+id/currencyConverter"
-		app:layout_constraintVertical_bias="0.0"
+		app:layout_constraintTop_toBottomOf="@+id/budget_total_amount"
 		tools:visibility="visible">
 
 	</androidx.recyclerview.widget.RecyclerView>
@@ -177,7 +195,7 @@
 		android:layout_height="wrap_content"
 		android:layout_marginEnd="28dp"
 		android:layout_marginRight="28dp"
-		android:text="Total: $0"
+		android:text="placeholder"
 		app:layout_constraintBottom_toBottomOf="@+id/newExpense"
 		app:layout_constraintEnd_toStartOf="@+id/newExpense"
 		app:layout_constraintTop_toTopOf="@+id/newExpense"

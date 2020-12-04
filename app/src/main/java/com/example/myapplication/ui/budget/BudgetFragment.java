@@ -31,14 +31,14 @@ import java.util.ArrayList;
 
 public class BudgetFragment extends Fragment {
 
-	private TextWatcher fromAmountWatcher, toAmountWatcher;
+	private TextWatcher fromAmountWatcher, toAmountWatcher, budgetTextWatcher;
 	private boolean ignoreChanges = false; //prevent infinite loops caused by TextWatchers recursively triggering each other
 
 	private ArrayList<BudgetViewModel> expenses;
 	private BudgetAdapter adapter;
 
 	Spinner fromCurrency, toCurrency;
-	TextView fromAmount, toAmount;
+	TextView fromAmount, toAmount, budgetTotal;
 	Button newExpense, addExpense;
 	ViewGroup newExpensePrompt;
 	RecyclerView recyclerView;
@@ -75,6 +75,8 @@ public class BudgetFragment extends Fragment {
 		fromAmount = root.findViewById(R.id.fromAmount);
 		toCurrency = root.findViewById(R.id.toCurrency);
 		toAmount = root.findViewById(R.id.toAmount);
+
+		budgetTotal = root.findViewById(R.id.budget_total_amount);
 
 		newExpense = root.findViewById(R.id.newExpense);
 		addExpense = root.findViewById(R.id.addExpense);
@@ -128,6 +130,21 @@ public class BudgetFragment extends Fragment {
 				}
 			}
 		};
+		budgetTextWatcher = new TextWatcher() {
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				updateTotal();
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {}
+		};
+
+		budgetTotal.addTextChangedListener(budgetTextWatcher);
+		updateTotal();
 
 		//Specify the layout to use when the list of choices appears
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -243,16 +260,22 @@ public class BudgetFragment extends Fragment {
 	}
 
 	public float getTotal() {
-		float total = 0f;
+		float total;
+		try {
+			total = Float.parseFloat(budgetTotal.getText().toString());
+		} catch (NumberFormatException e) {
+			total = 0f;
+		}
+
 		for(BudgetViewModel item : expenses) {
-			total += item.amount;
+			total -= item.amount;
 		}
 
 		return total;
 	}
 
 	private void updateTotal() {
-		((TextView) root.findViewById(R.id.budget_total)).setText(String.format("Total: %s", Currency.CAD.format(getTotal(), true)));
+		((TextView) root.findViewById(R.id.budget_total)).setText(String.format("Remaining: %s", Currency.CAD.format(getTotal(), true)));
 	}
 
 	//Setting up swipe to delete
