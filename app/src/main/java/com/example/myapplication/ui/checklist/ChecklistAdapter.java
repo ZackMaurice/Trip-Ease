@@ -10,14 +10,13 @@ import com.example.myapplication.R;
 import java.util.ArrayList;
 
 /*ChecklistAdapter controls the display of the checklist
-Takes in an arraylist of ChecklistViewModel, and displays those items as a RecyclerView
-*/
+Takes in an arraylist of ChecklistViewModel objects, and displays those items as a RecyclerView*/
 public class ChecklistAdapter extends RecyclerView.Adapter<ChecklistAdapter.ChecklistViewHolder> {
 
     //Custom ViewHolder to display items properly
     public class ChecklistViewHolder extends RecyclerView.ViewHolder {
-        CheckBox checkBox;
-        TextView text;
+        private CheckBox checkBox;
+        private TextView text;
 
         public ChecklistViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -26,7 +25,7 @@ public class ChecklistAdapter extends RecyclerView.Adapter<ChecklistAdapter.Chec
         }
     }
 
-    ArrayList<ChecklistViewModel> checklist;
+    private ArrayList<ChecklistViewModel> checklist;
 
     public ChecklistAdapter(ArrayList<ChecklistViewModel> list){
         this.checklist = list;
@@ -54,9 +53,6 @@ public class ChecklistAdapter extends RecyclerView.Adapter<ChecklistAdapter.Chec
     public int getItemViewType(final int position) {
         return R.layout.checklist_item;
     }
-
-
-
 }
 
 

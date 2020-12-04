@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -30,11 +31,15 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class ChecklistFragment extends Fragment {
-     EditText text;
-     Button addButton;
-     ArrayList<ChecklistViewModel> checklist;
-     ChecklistAdapter adapter;
-     RecyclerView recyclerView;
+     private EditText text, templateText;
+     private Button addButton, loadButton, saveViewButton, cancelButton, saveButton, cancelButton2, loadButton2;
+     private ArrayList<ChecklistViewModel> checklist;
+     private ArrayList<TemplateViewModel> templates;
+     private ChecklistAdapter adapter;
+     private TemplateAdapter templateAdapter;
+     private RecyclerView recyclerView, templateView;
+     private ConstraintLayout mainView, saveView, loadView;
+     private ViewGroup container;
 
     private FirebaseAuth mAuth;
     private FirebaseUser user;
@@ -45,6 +50,7 @@ public class ChecklistFragment extends Fragment {
      public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
          View root = inflater.inflate(R.layout.fragment_checklist, container, false);
          checklist = new ArrayList<>();
+         templates = new ArrayList<>();
 
          //Firebase instantiations
          mAuth = FirebaseAuth.getInstance();
@@ -59,15 +65,47 @@ public class ChecklistFragment extends Fragment {
          recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
          recyclerView.addItemDecoration(new DividerItemDecoration(this.getActivity(), LinearLayout.VERTICAL));
 
+         templateAdapter = new TemplateAdapter(templates);
+         templateView = root.findViewById(R.id.templateRecyclerView);
+         templateView.setHasFixedSize(true);
+         templateView.setAdapter(templateAdapter);
+         templateView.setLayoutManager(new LinearLayoutManager(getContext()));
+         templateView.addItemDecoration(new DividerItemDecoration(this.getActivity(), LinearLayout.VERTICAL));
+         templateAdapter.setOnItemClickListener(new TemplateAdapter.OnItemClickListener() {
+             @Override
+             public void onItemClick(int position) {
+                 checklist.clear();
+                 adapter.notifyDataSetChanged();
+                 for (int i=0; i < templates.get(position).getTemplates().size(); i++) {
+                    checklist.add(new ChecklistViewModel(templates.get(position).getTemplates().get(i)));
+                    adapter.notifyItemInserted(i);
+                 }
+                 ref.setValue(checklist);
+                 adapter.notifyDataSetChanged();
+                 mainView.setVisibility(View.VISIBLE);
+                 loadView.setVisibility(View.GONE);
+             }
+         });
+
          //XML item instantiations
          addButton = root.findViewById(R.id.button_addItem);
+         loadButton = root.findViewById(R.id.loadTemplateButton);
+         loadButton2 = root.findViewById(R.id.loadTemplate2);
+         saveViewButton = root.findViewById(R.id.saveTemplateButton);
+         saveButton = root.findViewById(R.id.saveTemplate2);
          text = root.findViewById(R.id.text_addItem);
+         loadButton = root.findViewById(R.id.loadTemplateButton);
+         cancelButton = root.findViewById(R.id.cancelTemplate);
+         cancelButton2 = root.findViewById(R.id.cancelLoad);
+         mainView = root.findViewById(R.id.checklist_main);
+         saveView = root.findViewById(R.id.saveTemplateView);
+         loadView = root.findViewById(R.id.loadTemplateView);
 
          //Initialization helpers
          initListeners();
+         initTemplates();
          enableSwipeDelete();
          initDatabase();
-
          return root;
      }
 
@@ -85,6 +123,74 @@ public class ChecklistFragment extends Fragment {
                  }
              }
          });
+
+         loadButton.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 mainView.setVisibility(View.GONE);
+                 loadView.setVisibility(View.VISIBLE);
+                 }
+         });
+
+         saveViewButton.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 mainView.setVisibility(View.GONE);
+                 saveView.setVisibility(View.VISIBLE);
+             }
+         });
+
+         cancelButton.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 mainView.setVisibility(View.VISIBLE);
+                 saveView.setVisibility(View.GONE);
+             }
+         });
+
+         cancelButton2.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 mainView.setVisibility(View.VISIBLE);
+                 loadView.setVisibility(View.GONE);
+             }
+         });
+
+         saveButton.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 saveTemplate();
+             }
+         });
+
+         loadButton2.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 loadTemplate();
+             }
+         });
+     }
+
+     public void saveTemplate(){
+
+     }
+
+     public void loadTemplate(){
+
+     }
+
+     public void initTemplates(){
+
+        ArrayList<String> temp = new ArrayList<>();
+        temp.add("Towel");
+        temp.add("Sunscreen");
+        temp.add("Volleyball");
+        temp.add("Frisbee");
+        temp.add("Swimsuit");
+        temp.add("Sandals");
+        temp.add("Cooler");
+        templates.add(new TemplateViewModel("Beach", temp));
+        templateAdapter.notifyDataSetChanged();
      }
 
      //Setting up swipe to delete
@@ -101,7 +207,6 @@ public class ChecklistFragment extends Fragment {
                  adapter.notifyItemRemoved(position);
              }
          };
-
          ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeToDeleteCallback);
          itemTouchhelper.attachToRecyclerView(recyclerView);
      }
