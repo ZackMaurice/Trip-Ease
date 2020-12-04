@@ -75,7 +75,7 @@
             android:id="@+id/textView2"
             android:layout_width="110dp"
             android:layout_height="20dp"
-            android:layout_marginTop="288dp"
+            android:layout_marginTop="188dp"
             android:text="Template Name?"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -149,17 +149,6 @@
             android:text="Cancel"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
-
-        <Button
-            android:id="@+id/loadTemplate2"
-            android:layout_width="75dp"
-            android:layout_height="35dp"
-            android:layout_marginEnd="88dp"
-            android:layout_marginRight="88dp"
-            android:layout_marginBottom="152dp"
-            android:text="Load"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

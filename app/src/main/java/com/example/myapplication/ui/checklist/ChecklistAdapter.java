@@ -23,6 +23,7 @@ public class ChecklistAdapter extends RecyclerView.Adapter<ChecklistAdapter.Chec
             checkBox = itemView.findViewById(R.id.cbDone);
             text = itemView.findViewById(R.id.tvTitle);
         }
+
     }
 
     private ArrayList<ChecklistViewModel> checklist;

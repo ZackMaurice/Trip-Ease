@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -32,14 +33,13 @@ import java.util.ArrayList;
 
 public class ChecklistFragment extends Fragment {
      private EditText text, templateText;
-     private Button addButton, loadButton, saveViewButton, cancelButton, saveButton, cancelButton2, loadButton2;
+     private Button addButton, loadButton, saveViewButton, cancelButton, saveButton, cancelButton2;
      private ArrayList<ChecklistViewModel> checklist;
      private ArrayList<TemplateViewModel> templates;
      private ChecklistAdapter adapter;
      private TemplateAdapter templateAdapter;
      private RecyclerView recyclerView, templateView;
      private ConstraintLayout mainView, saveView, loadView;
-     private ViewGroup container;
 
     private FirebaseAuth mAuth;
     private FirebaseUser user;
@@ -90,7 +90,6 @@ public class ChecklistFragment extends Fragment {
          //XML item instantiations
          addButton = root.findViewById(R.id.button_addItem);
          loadButton = root.findViewById(R.id.loadTemplateButton);
-         loadButton2 = root.findViewById(R.id.loadTemplate2);
          saveViewButton = root.findViewById(R.id.saveTemplateButton);
          saveButton = root.findViewById(R.id.saveTemplate2);
          text = root.findViewById(R.id.text_addItem);
@@ -100,6 +99,7 @@ public class ChecklistFragment extends Fragment {
          mainView = root.findViewById(R.id.checklist_main);
          saveView = root.findViewById(R.id.saveTemplateView);
          loadView = root.findViewById(R.id.loadTemplateView);
+         templateText = root.findViewById(R.id.text_saveTemplate);
 
          //Initialization helpers
          initListeners();
@@ -162,25 +162,33 @@ public class ChecklistFragment extends Fragment {
                  saveTemplate();
              }
          });
-
-         loadButton2.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 loadTemplate();
-             }
-         });
      }
 
      public void saveTemplate(){
-
-     }
-
-     public void loadTemplate(){
-
+        boolean nameEQ = false;
+         if(templateText.getText().toString().length() == 0) {
+             Toast toast = Toast.makeText(getContext(), "Please enter a name.", Toast.LENGTH_SHORT);
+             toast.show();
+             return;
+         }
+        for(int i=0; i < templates.size(); i++) {
+            if (templateText.getText().toString().equals(templates.get(i).getText())) {
+                Toast toast = Toast.makeText(getContext(), "Please enter a unique name.", Toast.LENGTH_SHORT);
+                toast.show();
+                return;
+            }
+        }
+        ArrayList<String> list = new ArrayList<>();
+        for(int i=0; i < checklist.size(); i++) {
+            list.add(checklist.get(i).getText());
+        }
+        templates.add(new TemplateViewModel(templateText.getText().toString(), list));
+        templateAdapter.notifyItemInserted(templates.size()-1);
+        mainView.setVisibility(View.VISIBLE);
+        saveView.setVisibility(View.GONE);
      }
 
      public void initTemplates(){
-
         ArrayList<String> temp = new ArrayList<>();
         temp.add("Towel");
         temp.add("Sunscreen");
@@ -198,17 +206,24 @@ public class ChecklistFragment extends Fragment {
          SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(getContext()) {
              @Override
              public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-
-
                  final int position = viewHolder.getAdapterPosition();
-                 final ChecklistViewModel item = checklist.get(position);
                  checklist.remove(position);
                  ref.setValue(checklist);
                  adapter.notifyItemRemoved(position);
              }
          };
+         SwipeToDeleteCallback swipeToDeleteCallback2 = new SwipeToDeleteCallback(getContext()) {
+             @Override
+             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+                 final int position = viewHolder.getAdapterPosition();
+                 templates.remove(position);
+                 templateAdapter.notifyItemRemoved(position);
+             }
+         };
          ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeToDeleteCallback);
          itemTouchhelper.attachToRecyclerView(recyclerView);
+         ItemTouchHelper itemTouchHelper2 = new ItemTouchHelper(swipeToDeleteCallback2);
+         itemTouchHelper2.attachToRecyclerView(templateView);
      }
 
     //Setting up Firebase integration
@@ -225,7 +240,6 @@ public class ChecklistFragment extends Fragment {
              public void onCancelled(@NonNull DatabaseError error) {
                  System.out.println("\n\nLoad failed.\n");
              }
-
          });
      }
 }
