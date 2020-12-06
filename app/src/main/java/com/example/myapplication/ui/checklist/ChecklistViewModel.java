@@ -14,12 +14,11 @@ public class ChecklistViewModel {
         setText("");
         isChecked = false;
     }
+
     public ChecklistViewModel(@NonNull final String newText) {
         setText(newText);
         isChecked = false;
     }
-
-
 
     @NonNull
     public String getText() {

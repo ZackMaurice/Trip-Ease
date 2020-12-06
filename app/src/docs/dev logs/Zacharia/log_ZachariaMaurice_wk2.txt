@@ -1,0 +1,3 @@
+sept 21 - meeting, creating repo - 60 mins
+sept 24 - learning android studio xml objects - 2 hours
+sept 25 - messing around with java interactions and android - 4 hours

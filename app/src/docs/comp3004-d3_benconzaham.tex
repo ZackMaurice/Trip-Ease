@@ -3,6 +3,7 @@
 
 \usepackage{graphicx}
 \usepackage{subcaption}
+\usepackage{hyperref}
 
 \title{TripEase - Team Benconzaham}
 \author{
@@ -42,6 +43,9 @@
 	and allows the user to interactively update.
 	Without any external systems other than the firebase cloudstore, the app only needs allow the user to interact,
 	then update the server when needed.
+	If we were to implement any real-time features, such as a flight status tracker,
+	then the observer pattern would provide beneficial aspects;
+	as it stands, though, there are no features that would have value added from such an implementation.
 
 	Over-all, the goal of TripEase is to remove the stress of mundane vacationing tasks,
 	allowing users to fully take advantage of the time they have to themselves;
@@ -53,6 +57,10 @@
 	Limiting the functionality to these core features,
 	instead of providing a cluttered, "feature rich experience" accomplishes this.
 
+	\pagebreak
+	\includegraphics[angle=270,scale=0.4]{Trip-Ease Component Diagram.png}
+	\linebreak
+	\href{https://www.figma.com/file/VlRhkIKiCqkBc3qPGubwtc/Trip-Ease-Component-Diagram}{Figma Link}
 	\pagebreak
 	\section*{System Design}
 
@@ -69,9 +77,35 @@
 	and have it more maintainable for future features to be added and or object types. The reason for the approach of templating the views, in terms of creating a skeleton that the user can
 	fill with the parts of their chosing, was to make the process much more transferrable between devices and users themselves. The idea behind having the structure of each of the views
 	be a template in design, was for future features. The main one being, users ability to upload their templates- and others being able to download said templates. The reason for this was
-	so that a community could potentially develop and users of the application could use each others templates for things such as; packing lists, budgetting, and or iteneraries/scheduling.
+	so that a community could potentially develop and users of the application could use each others templates for things such as; packing lists, budgetting, and or iteneraries/scheduling.\\
+	\\
+
+	In our app, we minimize coupling and accommodate changing requirements by using fragments and having separate data segments between them.
+	The data for any given fragment is stored within itself, and on the database.
+	The Checklist fragment has its list items all stored in its own code, the Itinerary fragment has its tasks stored within its section, and the Budget fragment has its own data stored within itself as well.\\
+
+
+	By using fragments, we can easily accommodate a new addition to the program, or even the removal of another feature from the program if it is no longer deemed necessary.
+	To do so, we would simply delete all calls to the fragment and then delete the fragment itself.
+	To add a new feature/tab to the program, we would add a new fragment and name it according to the new feature and purpose , and create a route to the fragment through our navigation bar.\\
+
+
+	In the future if we were to get enough additional features to merit enough additional fragments, we could take an encapsulated approach to categorizing our fragments so that we can separate them by main focus.
+
 
 	\pagebreak
+	\includegraphics[angle=270,scale=0.2]{Trip-Ease Class Diagram.png}
+	\linebreak
+	\href{https://www.figma.com/file/TNWldp7eknAI9QecDTNVad/Trip-Ease-Class-Diagram}{Figma Link}
+	\pagebreak
 	\section*{Task Breakdown}
-
+	We distributed tasks based on which main parts of the program someone would work on, and with four members it was quite simple for us:
+	\begin{itemize}
+		\item Login\&Registration as well as the initial firebase setup was done by Graham
+		\item Checklist fragment was done by Conor
+		\item Itinerary fragment was done by Zacharia
+		\item Budget fragment was done by Benjamin.
+	\end{itemize}
+	By splitting the app into four main parts, it allowed each of us to work independently on our own sections and regroup by pushing to the GitHub repository and catching each other up quickly on what was done.
+	From this point, we could test each other's work and decide as a group what everyone should work on for the next week or two.
 \end{document}

@@ -10,42 +10,79 @@ import android.widget.*;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.ui.checklist.ChecklistViewModel;
 import com.example.myapplication.util.Currency;
+import com.example.myapplication.util.SwipeToDeleteCallback;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
 public class BudgetFragment extends Fragment {
 
-	private BudgetViewModel budgetViewModel;
-	private TextWatcher fromAmountWatcher, toAmountWatcher;
+	private TextWatcher fromAmountWatcher, toAmountWatcher, budgetTextWatcher;
 	private boolean ignoreChanges = false; //prevent infinite loops caused by TextWatchers recursively triggering each other
 
-	private ArrayList<BudgetItem> expenses;
+	private ArrayList<BudgetViewModel> expenses;
+	private BudgetAdapter adapter;
 
 	Spinner fromCurrency, toCurrency;
-	TextView fromAmount, toAmount;
+	TextView fromAmount, toAmount, budgetTotal;
 	Button newExpense, addExpense;
-	ViewGroup expenseList, newExpensePrompt;
+	ViewGroup newExpensePrompt;
+	RecyclerView recyclerView;
+
+	private FirebaseAuth mAuth;
+	private FirebaseUser user;
+	private FirebaseDatabase database = FirebaseDatabase.getInstance();
+	private DatabaseReference ref;
+
+	private View root;
 
 	public View onCreateView(@NonNull LayoutInflater inflater,
 							 ViewGroup container, Bundle savedInstanceState) {
-		budgetViewModel = ViewModelProviders.of(this).get(BudgetViewModel.class);
-		View root = inflater.inflate(R.layout.fragment_budget, container, false);
+		root = inflater.inflate(R.layout.fragment_budget, container, false);
 
 		expenses = new ArrayList<>();
+
+		//Firebase instantiations
+		mAuth = FirebaseAuth.getInstance();
+		user = mAuth.getCurrentUser();
+		ref = database.getReference("budget/"+user.getUid());
+		initDatabase();
+
+
+		//RecyclerView instantiations
+		adapter = new BudgetAdapter(expenses);
+		recyclerView = root.findViewById(R.id.expenseList);
+		recyclerView.setHasFixedSize(true);
+		recyclerView.setAdapter(adapter);
+		recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+		recyclerView.addItemDecoration(new DividerItemDecoration(this.getActivity(), LinearLayout.VERTICAL));
 
 		fromCurrency = root.findViewById(R.id.fromCurrency);
 		fromAmount = root.findViewById(R.id.fromAmount);
 		toCurrency = root.findViewById(R.id.toCurrency);
 		toAmount = root.findViewById(R.id.toAmount);
 
+		budgetTotal = root.findViewById(R.id.budget_total_amount);
+
 		newExpense = root.findViewById(R.id.newExpense);
 		addExpense = root.findViewById(R.id.addExpense);
-		expenseList = root.findViewById(R.id.expenseList);
 		newExpensePrompt = root.findViewById(R.id.newExpensePrompt);
+
+		enableSwipeDelete();
 
 
 		//Create an ArrayAdapter using the string array and a default spinner layout
@@ -93,6 +130,21 @@ public class BudgetFragment extends Fragment {
 				}
 			}
 		};
+		budgetTextWatcher = new TextWatcher() {
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				updateTotal();
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {}
+		};
+
+		budgetTotal.addTextChangedListener(budgetTextWatcher);
+		updateTotal();
 
 		//Specify the layout to use when the list of choices appears
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -132,13 +184,13 @@ public class BudgetFragment extends Fragment {
 
 		//show newExpensePrompt on click
 		newExpense.setOnClickListener(v->{
-			expenseList.setVisibility(View.GONE);
+			recyclerView.setVisibility(View.GONE);
 			newExpensePrompt.setVisibility(View.VISIBLE);
 		});
 
 		addExpense.setOnClickListener(v->{
 			newExpensePrompt.setVisibility(View.GONE);
-			expenseList.setVisibility(View.VISIBLE);
+			recyclerView.setVisibility(View.VISIBLE);
 
 			//retrieve and reset user inputs
 			EditText expenseNameItem = newExpensePrompt.findViewById(R.id.expenseName),
@@ -183,34 +235,22 @@ public class BudgetFragment extends Fragment {
 	 * @param amount The quantity of the expense
 	 */
 	private void addNewExpense(String name, float amount) {
-		addNewExpense(new BudgetItem(name, amount));
+		addNewExpense(new BudgetViewModel(name, amount));
 	}
 
 	/**
 	 * @param expense the BudgetItem that represents this expense.
 	 */
-	private void addNewExpense(BudgetItem expense) {
+	private void addNewExpense(BudgetViewModel expense) {
 		String name = expense.name;
 		float amount = expense.amount;
 
 		expenses.add(expense);
 
-		LinearLayout expenseItem = new LinearLayout(getContext());
+		ref.setValue(expenses);
 
-		TextView nameView = new TextView(getContext()),
-				amountView = new TextView(getContext());
-
-		nameView.setText(name);
-		nameView.setTextSize(24);
-
-		amountView.setText(Float.toString(amount));
-		amountView.setTextSize(18);
-		amountView.setPadding(32, 0, 0, 0);
-
-		expenseItem.addView(nameView);
-		expenseItem.addView(amountView);
-
-		expenseList.addView(expenseItem, 0);
+		adapter.notifyDataSetChanged();
+		updateTotal();
 	}
 
 	private void setCurrencyText(TextView textView, String amount) {
@@ -219,13 +259,60 @@ public class BudgetFragment extends Fragment {
 		ignoreChanges = false;
 	}
 
-	private static class BudgetItem {
-		public final String name;
-		public final float amount;
-
-		public BudgetItem(String name, Float amount) {
-			this.name = name;
-			this.amount = amount;
+	public float getTotal() {
+		float total;
+		try {
+			total = Float.parseFloat(budgetTotal.getText().toString());
+		} catch (NumberFormatException e) {
+			total = 0f;
 		}
+
+		for(BudgetViewModel item : expenses) {
+			total -= item.amount;
+		}
+
+		return total;
+	}
+
+	private void updateTotal() {
+		((TextView) root.findViewById(R.id.budget_total)).setText(String.format("Remaining: %s", Currency.CAD.format(getTotal(), true)));
+	}
+
+	//Setting up swipe to delete
+	public void enableSwipeDelete () {
+		SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(getContext()) {
+			@Override
+			public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+
+
+				final int position = viewHolder.getAdapterPosition();
+				final BudgetViewModel item = expenses.get(position);
+				expenses.remove(position);
+				ref.setValue(expenses);
+				adapter.notifyItemRemoved(position);
+				updateTotal();
+			}
+		};
+
+		ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeToDeleteCallback);
+		itemTouchhelper.attachToRecyclerView(recyclerView);
+	}
+
+	//Setting up Firebase integration
+	public void initDatabase () {
+		ref.addValueEventListener(new ValueEventListener() {
+			@Override
+			public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+				expenses.clear();
+				for (DataSnapshot d : dataSnapshot.getChildren()) {
+					expenses.add(d.getValue(BudgetViewModel.class));
+				}
+				adapter.notifyDataSetChanged();
+			}
+			public void onCancelled(@NonNull DatabaseError error) {
+				System.out.println("\n\nLoad failed.\n");
+			}
+
+		});
 	}
 }
