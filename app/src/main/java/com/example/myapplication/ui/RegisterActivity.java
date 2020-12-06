@@ -37,16 +37,20 @@ public class RegisterActivity extends AppCompatActivity {
             String email = newEmail.getText().toString().trim();
             String password = registerPw.getText().toString().trim();
 
-            //TODO: SET PARAMATERS FOR PASSWORD CONFIRMATION
-
-            fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-                if(task.isSuccessful()){
-                    Toast.makeText(RegisterActivity.this, "Welcome to Trip-Ease!", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                }else {
-                    Toast.makeText(RegisterActivity.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
+            //To simplify the password creation process, this criteria makes it easier for the user to create a password
+            if(password.length() < 6){
+                Toast.makeText(RegisterActivity.this, "Please, create a password with 6 or more characters.", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(RegisterActivity.this, "Welcome to Trip-Ease!", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    } else {
+                        Toast.makeText(RegisterActivity.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         });
         loginButton.setOnClickListener(v -> {
             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
