@@ -2,6 +2,7 @@
 
 \usepackage{graphicx}
 \usepackage{subcaption}
+\usepackage{hyperref}
 
 \title{TripEase}
 \author{
@@ -22,6 +23,10 @@ Graham Shannon
 
 	\maketitle
 
+	\section*{Dev Logs Hyperlink}
+		\href{https://github.com/theArcticGiant/comp3004-f20/tree/master/app/src/docs/dev logs}{Dev Logs}
+
+
 	\section*{Functional Properties}
 
 	\begin{itemize}
@@ -41,6 +46,9 @@ Graham Shannon
 				\item Users can remove any planned task that has already passed, or that they no longer wish to have in their plans
 			\end{itemize}
 		\item{Budgeting}
+
+			Fully implemented, user can create budget items that will count against their total budget.
+			Items can added and deleted and the changes are reflected locally and on Firebase.
 
 		\item{Misc Utilities}
 		The initial idea for Misc utilities was for features that were not longer going to be implemented.
@@ -87,6 +95,7 @@ Graham Shannon
 		are extremely efficient.
 		Since the link to firebase is established right as the user logs in, their data is already there to be retrieved.
 		So as they navigate through the resources[checklist, budget, intenerary] it auto populates their page.
+			Firebase integration is remarkably responsive, changes are saved and loaded quickly.
 	\end{enumerate}
 
 	\pagebreak
