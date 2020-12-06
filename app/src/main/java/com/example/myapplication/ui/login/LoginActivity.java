@@ -57,7 +57,11 @@ public class LoginActivity extends AppCompatActivity {
 
             mProgress.setVisibility(View.VISIBLE);
 
-            System.out.println(email + " " + password );
+
+            //TODO: Need to fix persistence, it isn't working as intended currently
+
+           // fAuth.auth().setPersistence(fAuth.auth.Auth.Persistence.SESSION).then(function() {})
+
             fAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                 if(task.isSuccessful()){
                     FirebaseUser user = fAuth.getCurrentUser();

@@ -1,0 +1,8 @@
+Monday October 26
+	Group Meeting - 1 hour
+
+Weekly Work
+    Finished registration activity, made it connected to firebase
+    Created logout function within the misc tab
+    Worked on making registration look nicer, and added in a
+    loading bar - 8 hours

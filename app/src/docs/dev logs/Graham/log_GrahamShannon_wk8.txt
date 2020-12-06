@@ -1,0 +1,13 @@
+Monday November 2
+	Group Meeting - 1 hour
+
+Sunday November 8
+	Group Meeting - 1.5 hours
+		Finalizing D2
+	Making checklist load with sample data - 0.5 hours
+
+Weekly Work
+    Finished logout feature by adding in guest users
+    With guests, allowed the user to sign in as guest,
+    made a register button while in as guest, and logout
+    while not - 2 hours

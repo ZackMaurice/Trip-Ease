@@ -1,0 +1,6 @@
+Friday October 9
+	Group Meeting - An hour
+
+Weekly Work
+    Setting up login page, and creating link to firebase
+    for storing the information - 5 hours

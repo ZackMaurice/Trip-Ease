@@ -1,0 +1,10 @@
+Monday October 19
+	Group Meeting - 1 hour
+
+Weekly Work
+    Spent time figuring out how to create
+    a registration page - 3 hours
+    Began implementing registration via email and
+    password, dabbled with email verification but for
+    showcasing in a demo seems like a bad idea
+    - 6 hours

@@ -1,0 +1,7 @@
+Monday October 12
+	Group Meeting - 1 hour
+
+Weekly Work
+    Spent time finishing login activity, and cleaning up code
+    made it efficient, and tested thoroughly to make sure
+    that the same accounts can be logged in - 5 hours

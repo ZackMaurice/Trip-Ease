@@ -1,9 +1,16 @@
 Monday Sept 14
-	D0 - 30 minutes
-	Group Meeting - 90 minutes
+	D0 - 0.5  hours
+	Group Meeting - 1.5 hours
 		Discussing and splitting D1
 
 Tuesday Sept 16
 	D1:
-		Project Explanation - 45 Minutes
-		Mockups - 120 Minutes
+		Project Explanation - 1 hour
+		Mockups - 1 hour
+
+Weekly Work
+    Around 2 hours of research finding out the best way to create a
+    android application with minimal exposure
+    Around 3 hours of researching how to integrate database(s), found firebase
+    and learned how to incorporate
+

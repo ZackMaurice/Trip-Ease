@@ -1,5 +1,5 @@
 Monday Sept 28
-	Group Meeting - 60 minutes
+	Group Meeting - 1 hour
 		Created Android Studio Project
 		Weekly task: Start working on project UI
 		Splitting project sections:
@@ -9,7 +9,5 @@ Monday Sept 28
 			Graham - Database and authentication
 
 Weekly Work
-	Starting Checklist UI - 120 minutes
-
-Friday Oct 2
-	Working on Checklist UI - 150 minutes
+	Starting Firebase link into Android Studio 3 hours
+	Learning about activities and which way to go for login and registration - 2 hours
