@@ -3,3 +3,4 @@ dec 2 - meeting, talking about d4 and what we need to iron out - 1 hour
 dec 3 - working on switching to recyclerview - 3 hours
 dec 4 - working on switching to recyclerview - 2 hours
 dec 5 - adding swipe to delete, notifications - 4 hours
+dec 6 - meeting, working on d4 - 2 hours
