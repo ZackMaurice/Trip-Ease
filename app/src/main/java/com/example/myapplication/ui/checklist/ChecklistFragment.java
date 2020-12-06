@@ -198,7 +198,20 @@ public class ChecklistFragment extends Fragment {
         temp.add("Sandals");
         temp.add("Cooler");
         templates.add(new TemplateViewModel("Beach", temp));
-        templateAdapter.notifyDataSetChanged();
+        templateAdapter.notifyItemInserted(templates.size()-1);
+         ArrayList<String> temp2 = new ArrayList<>();
+         temp2.add("Backpack");
+         temp2.add("Water Bottle");
+         temp2.add("Tent");
+         temp2.add("Sleeping Bag");
+         temp2.add("Firewood");
+         temp2.add("Sweater");
+         temp2.add("Towel");
+         temp2.add("Camp chair");
+         temp2.add("Air mattress");
+         temp2.add("Cooler");
+         templates.add(new TemplateViewModel("Camping", temp2));
+         templateAdapter.notifyItemInserted(templates.size()-1);
      }
 
      //Setting up swipe to delete
