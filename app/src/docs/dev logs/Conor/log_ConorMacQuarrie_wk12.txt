@@ -1,4 +1,25 @@
 Monday November 30
 	Group meeting - 30 minutes
 		Discussing D4
+Wednesday December 2
+	Group meeting - 60 minutes
+		Discussing and distributing D4 tasks	
+Thursday December 3
+	Working on Item templating - 240 minutes
+		Adjusted UI features
+		Started on templating code
+
+Friday December 4
+	Working on Item templating - 300 minutes
+		Working on templating code
 		
+Saturday December 5 	
+	Finishing Item templating 150 mintues
+		Finishing code
+		Finishing UI adjustments
+	Working on D4 120 minutes
+		Composing checklist and interface status reports
+
+Sunday December 6 
+	Group meeting 120 minutes
+		Finishing D4
