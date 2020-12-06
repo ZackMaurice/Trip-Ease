@@ -1,0 +1,2 @@
+Continued implementing UI interactions for Budget
+Fleshed out Firebase design details with team.

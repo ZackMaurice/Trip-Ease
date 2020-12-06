@@ -1,0 +1,1 @@
+Implement RecyclerView, Add final polish to UI.

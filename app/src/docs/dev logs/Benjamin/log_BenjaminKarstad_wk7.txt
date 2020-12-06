@@ -1,0 +1,2 @@
+Finished smoothing out kinks.
+Integrate firebase with budget fragment.
